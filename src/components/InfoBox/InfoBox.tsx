@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { fetchNumAllOrders } from "../../api-client/orders-api";
-import { fetchNumOfAvailableProducts } from "../../api-client/product-api";
+import { fetchNumOfAvailableProducts } from "../../api-client/products-api";
 import "./InfoBox.css";
 
 interface Props {}
