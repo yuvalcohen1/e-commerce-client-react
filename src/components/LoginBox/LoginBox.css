@@ -1,3 +1,6 @@
 #login-box {
   width: 30%;
 }
+#login-error-message {
+  color: red;
+}

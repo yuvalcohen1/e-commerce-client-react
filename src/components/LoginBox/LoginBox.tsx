@@ -1,7 +1,11 @@
-import React, { FC, FormEvent, useCallback, useState } from "react";
-import { Link } from "react-router-dom";
-import { useAppDispatch } from "../../redux/app/hooks";
-import { fetchUserDetails } from "../../redux/features/userSlice";
+import React, { FC, FormEvent, useCallback, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
+import {
+  fetchUserDetails,
+  resetUserState,
+  selectUserState,
+} from "../../redux/features/userSlice";
 import "./LoginBox.css";
 
 interface Props {}
@@ -9,8 +13,24 @@ interface Props {}
 const LoginBox: FC<Props> = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loginErrorMessage, setLoginErrorMessage] = useState("");
+
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
+  const userState = useAppSelector(selectUserState);
+
+  useEffect(() => {
+    if (userState.statusCode === 401) {
+      setLoginErrorMessage("Email and password don't match");
+      setTimeout(() => {
+        dispatch(resetUserState());
+        setLoginErrorMessage("");
+      }, 3e3);
+    } else if (userState.status === "failed" && userState.statusCode !== 401) {
+      navigate("/error");
+    }
+  }, [userState.statusCode, userState.status, navigate, dispatch]);
 
   const handleSubmit = useCallback(
     async (e: FormEvent) => {
@@ -37,7 +57,6 @@ const LoginBox: FC<Props> = (props) => {
             required
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="password">Password:</label>
           <input
@@ -48,7 +67,6 @@ const LoginBox: FC<Props> = (props) => {
             required
           />
         </div>
-
         <div className="btns">
           <button type="submit" className="login-btn btn">
             Login
@@ -57,6 +75,7 @@ const LoginBox: FC<Props> = (props) => {
             Sign Up
           </Link>
         </div>
+        <div id="login-error-message">{loginErrorMessage}</div>
       </form>
     </div>
   );

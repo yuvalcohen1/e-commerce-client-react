@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { LoginDetailsModel } from "../models/LoginDetails.model";
 import { UserModel } from "../models/User.model";
 
@@ -8,11 +8,17 @@ const api = axios.create({
 
 export async function fetchUserDetailsAndSetJwtCookieByLogin(
   loginDetails: LoginDetailsModel
-): Promise<UserModel> {
+): Promise<AxiosResponse<UserModel>> {
   const { email, password } = loginDetails;
-  const { data: user } = await api.post("/login", { email, password });
+  const response = await api.post(
+    "/login",
+    { email, password },
+    { withCredentials: true }
+  );
+
+  const { data: user } = response;
 
   localStorage.setItem("userDetails", JSON.stringify(user));
 
-  return user;
+  return response;
 }
