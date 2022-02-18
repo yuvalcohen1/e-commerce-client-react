@@ -1,16 +1,23 @@
 import React, { FC } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import HomePage from "./pages/HomePage/HomePage";
+import { useAppSelector } from "./redux/app/hooks";
+import { selectUserState } from "./redux/features/userSlice";
 
 const App: FC = () => {
+  const userState = useAppSelector(selectUserState);
+
   return (
     <BrowserRouter>
       <div className="App">
         <Routes>
           <Route path="/home" element={<HomePage />} />
-          <Route path="/error" element={<ErrorPage />} />
+          {userState.statusCode !== 200 ? (
+            <Route path="/error" element={<ErrorPage />} />
+          ) : null}
+          <Route path="/*" element={<Navigate to="/home" />} />
         </Routes>
       </div>
     </BrowserRouter>
