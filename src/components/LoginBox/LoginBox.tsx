@@ -2,7 +2,7 @@ import React, { FC, FormEvent, useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
 import {
-  fetchUserDetails,
+  fetchUserDetailsByLogin,
   resetUserState,
   selectUserState,
 } from "../../redux/features/userSlice";
@@ -38,7 +38,7 @@ const LoginBox: FC<Props> = (props) => {
 
       const loginDetails = { email, password };
 
-      dispatch(fetchUserDetails(loginDetails));
+      dispatch(fetchUserDetailsByLogin(loginDetails));
     },
     [email, password, dispatch]
   );

@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchUserDetailsAndSetJwtCookieByLogin } from "../../api-client/users-api";
+import {
+  fetchUserDetailsAndSetJwtCookieByLogin,
+  fetchUserDetailsAndSetJwtCookieByRegister,
+} from "../../api-client/users-api";
 import { LoginDetailsModel } from "../../models/LoginDetails.model";
+import { RegisterDetailsModel } from "../../models/RegisterDetails.model";
 import { UserModel } from "../../models/User.model";
 import { RootState } from "../app/store";
 
@@ -8,16 +12,18 @@ export interface UserState {
   value: UserModel | null;
   status: "idle" | "loading" | "failed";
   statusCode: number;
+  errorMessage: string;
 }
 
 const initialState: UserState = {
   value: null,
   status: "idle",
   statusCode: 200,
+  errorMessage: "",
 };
 
-export const fetchUserDetails = createAsyncThunk(
-  "user/fetchUserDetails",
+export const fetchUserDetailsByLogin = createAsyncThunk(
+  "user/fetchUserDetailsByLogin",
   async (loginDetails: LoginDetailsModel, thunkApi) => {
     try {
       const response = await fetchUserDetailsAndSetJwtCookieByLogin(
@@ -27,7 +33,28 @@ export const fetchUserDetails = createAsyncThunk(
 
       return user;
     } catch (error: any) {
-      return thunkApi.rejectWithValue(error.response.status);
+      return thunkApi.rejectWithValue(error.response);
+    }
+  }
+);
+
+export const fetchUserDetailsByRegister = createAsyncThunk(
+  "user/fetchUserDetailsByRegister",
+  async (registerDetails: RegisterDetailsModel, thunkApi) => {
+    try {
+      const response = await fetchUserDetailsAndSetJwtCookieByRegister(
+        registerDetails
+      );
+      const { data: user } = response;
+
+      return user;
+    } catch (error: any) {
+      const rejectValue = {
+        data: error.response.data,
+        status: error.response.status,
+      };
+
+      return thunkApi.rejectWithValue(rejectValue);
     }
   }
 );
@@ -40,6 +67,7 @@ export const userSlice = createSlice({
       state.status = "idle";
       state.statusCode = 200;
       state.value = null;
+      state.errorMessage = "";
     },
     // increment: (state) => {
     //   // Redux Toolkit allows us to write "mutating" logic in reducers. It
@@ -55,20 +83,40 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUserDetails.pending, (state) => {
+      .addCase(fetchUserDetailsByLogin.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchUserDetails.fulfilled, (state, action) => {
+      .addCase(fetchUserDetailsByLogin.fulfilled, (state, action) => {
         state.status = "idle";
         state.statusCode = 200;
         state.value = action.payload;
+        state.errorMessage = "";
       })
       .addCase(
-        fetchUserDetails.rejected,
+        fetchUserDetailsByLogin.rejected,
         (state, action: PayloadAction<any>) => {
           state.status = "failed";
           state.value = null;
-          state.statusCode = action.payload;
+          state.statusCode = action.payload.status;
+          state.errorMessage = action.payload.data;
+        }
+      )
+      .addCase(fetchUserDetailsByRegister.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchUserDetailsByRegister.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.statusCode = 200;
+        state.value = action.payload;
+        state.errorMessage = "";
+      })
+      .addCase(
+        fetchUserDetailsByRegister.rejected,
+        (state, action: PayloadAction<any>) => {
+          state.status = "failed";
+          state.value = null;
+          state.statusCode = action.payload.status;
+          state.errorMessage = action.payload.data;
         }
       );
   },
