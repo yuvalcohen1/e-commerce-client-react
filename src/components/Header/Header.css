@@ -1,0 +1,21 @@
+#header-top {
+  height: 10vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 10%;
+}
+
+#header-bottom {
+  height: 7vh;
+  display: flex;
+}
+
+#header-bottom.without-search {
+  justify-content: end;
+  margin-right: 12%;
+}
+
+#header-bottom.with-search {
+  margin-left: 8%;
+}

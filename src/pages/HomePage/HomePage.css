@@ -1,6 +1,11 @@
 #home-page {
   height: 100vh;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+main {
+  display: flex;
   align-items: center;
 }
