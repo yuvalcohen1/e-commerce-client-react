@@ -1,0 +1,18 @@
+#products {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product {
+  border: 1px solid black;
+  padding: 1rem;
+  width: 8vw;
+}
+
+.product .product-img-container {
+  width: 80%;
+}
+
+.product .product-img-container .product-img {
+  width: 100%;
+}

@@ -1,8 +1,10 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useCallback, useEffect } from "react";
+import { CategoryModel } from "../../models/Category.model";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
 import {
   getCategories,
   selectCategoriesState,
+  selectCategory,
 } from "../../redux/features/categoriesSlice";
 import "./Categories.css";
 
@@ -10,16 +12,34 @@ type Props = {};
 
 const Categories: FC<Props> = (props) => {
   const dispatch = useAppDispatch();
-  const { value: categories } = useAppSelector(selectCategoriesState);
+  const { value: categories, selectedCategory } = useAppSelector(
+    selectCategoriesState
+  );
 
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
 
+  const onCategoryClick = useCallback(
+    (category: CategoryModel) => {
+      dispatch(selectCategory(category));
+    },
+    [dispatch]
+  );
+
   return (
     <div id="categories">
       {categories?.map((category) => (
-        <div key={category._id} className="category">
+        <div
+          key={category._id}
+          id={
+            selectedCategory?.categoryName === category.categoryName
+              ? "selected-category"
+              : undefined
+          }
+          className="category"
+          onClick={() => onCategoryClick(category)}
+        >
           {category.categoryName}
         </div>
       ))}

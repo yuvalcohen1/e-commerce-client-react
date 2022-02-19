@@ -5,6 +5,7 @@ import { RootState } from "../app/store";
 
 export interface CategoriesState {
   value: CategoryModel[] | null;
+  selectedCategory: CategoryModel | null;
   status: "idle" | "loading" | "failed";
   statusCode: number;
   errorMessage: string;
@@ -12,6 +13,7 @@ export interface CategoriesState {
 
 const initialState: CategoriesState = {
   value: null,
+  selectedCategory: null,
   status: "idle",
   statusCode: 200,
   errorMessage: "",
@@ -35,6 +37,9 @@ export const categoriesSlice = createSlice({
   name: "categories",
   initialState,
   reducers: {
+    selectCategory: (state, action: PayloadAction<CategoryModel | null>) => {
+      state.selectedCategory = action.payload;
+    },
     // resetUserState: (state) => {
     //   state.status = "idle";
     //   state.statusCode = 200;
@@ -63,6 +68,9 @@ export const categoriesSlice = createSlice({
         state.statusCode = 200;
         state.value = action.payload;
         state.errorMessage = "";
+        state.selectedCategory = action.payload.find(
+          (category) => category.categoryName === "All"
+        )!;
       })
       .addCase(getCategories.rejected, (state, action: PayloadAction<any>) => {
         state.status = "failed";
@@ -73,9 +81,8 @@ export const categoriesSlice = createSlice({
   },
 });
 
-// export const {  } = categoriesSlice.actions;
+export const { selectCategory } = categoriesSlice.actions;
 
-// export const selectUser = (state: RootState) => state.user.value;
 export const selectCategoriesState = (state: RootState) => state.categories;
 
 export default categoriesSlice.reducer;
