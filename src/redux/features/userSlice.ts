@@ -69,6 +69,12 @@ export const userSlice = createSlice({
       state.value = null;
       state.errorMessage = "";
     },
+    getUserState: (state, action) => {
+      state.status = "idle";
+      state.statusCode = 200;
+      state.value = action.payload;
+      state.errorMessage = "";
+    },
     // increment: (state) => {
     //   // Redux Toolkit allows us to write "mutating" logic in reducers. It
     //   // doesn't actually mutate the state because it uses the Immer library,
@@ -122,7 +128,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { resetUserState } = userSlice.actions;
+export const { getUserState, resetUserState } = userSlice.actions;
 
 // export const selectUser = (state: RootState) => state.user.value;
 export const selectUserState = (state: RootState) => state.user;
