@@ -54,11 +54,15 @@ const LoginBox: FC<Props> = (props) => {
     }
   }, [dispatch, navigate]);
 
+  const handleResumeShopping = useCallback(() => {
+    navigate("/shopping");
+  }, [navigate]);
+
   return (
     <div id="login-access-box">
       {userState.value ? (
         cart ? (
-          <button>Resume Shopping</button>
+          <button onClick={handleResumeShopping}>Resume Shopping</button>
         ) : (
           <button onClick={handleStartShopping}>Start Shopping</button>
         )
