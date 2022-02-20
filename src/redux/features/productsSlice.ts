@@ -7,14 +7,14 @@ import { ProductModel } from "../../models/Product.model";
 import { RootState } from "../app/store";
 
 export interface ProductsState {
-  value: ProductModel[] | null;
+  value: ProductModel[];
   status: "idle" | "loading" | "failed";
   statusCode: number;
   errorMessage: string;
 }
 
 const initialState: ProductsState = {
-  value: null,
+  value: [],
   status: "idle",
   statusCode: 200,
   errorMessage: "",
@@ -52,12 +52,6 @@ export const productsSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    // resetUserState: (state) => {
-    //   state.status = "idle";
-    //   state.statusCode = 200;
-    //   state.value = null;
-    //   state.errorMessage = "";
-    // },
     // increment: (state) => {
     //   // Redux Toolkit allows us to write "mutating" logic in reducers. It
     //   // doesn't actually mutate the state because it uses the Immer library,
@@ -85,7 +79,7 @@ export const productsSlice = createSlice({
         getProductsByCategoryId.rejected,
         (state, action: PayloadAction<any>) => {
           state.status = "failed";
-          state.value = null;
+          state.value = [];
           state.statusCode = action.payload.status;
           state.errorMessage = action.payload.data;
         }
@@ -101,14 +95,14 @@ export const productsSlice = createSlice({
       })
       .addCase(getAllProducts.rejected, (state, action: PayloadAction<any>) => {
         state.status = "failed";
-        state.value = null;
+        state.value = [];
         state.statusCode = action.payload.status;
         state.errorMessage = action.payload.data;
       });
   },
 });
 
-// export const {  } = categoriesSlice.actions;
+// export const {  } = productSlice.actions;
 
 export const selectProductsState = (state: RootState) => state.products;
 

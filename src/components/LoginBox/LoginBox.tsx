@@ -1,6 +1,7 @@
 import React, { FC, FormEvent, useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
+import { getOpenCartFromApi } from "../../redux/features/cartSlice";
 import {
   fetchUserDetailsByLogin,
   resetUserState,
@@ -21,6 +22,9 @@ const LoginBox: FC<Props> = (props) => {
   const userState = useAppSelector(selectUserState);
 
   useEffect(() => {
+    if (userState.value) {
+      dispatch(getOpenCartFromApi());
+    }
     if (userState.statusCode === 401) {
       setLoginErrorMessage("Email and password don't match");
       setTimeout(() => {
