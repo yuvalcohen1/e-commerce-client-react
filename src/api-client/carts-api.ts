@@ -11,3 +11,14 @@ export async function fetchOpenCart(): Promise<AxiosResponse<CartModel>> {
   localStorage.setItem("cart", JSON.stringify(cart));
   return response;
 }
+
+export async function createCart(): Promise<AxiosResponse<CartModel>> {
+  const response = await api.post(
+    "/create-cart",
+    {},
+    { withCredentials: true }
+  );
+  const { data: cart } = response;
+  localStorage.setItem("cart", JSON.stringify(cart));
+  return response;
+}

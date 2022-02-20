@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { FC, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../redux/app/hooks";
 import { resetUserState } from "../../redux/features/userSlice";
@@ -6,10 +6,9 @@ import "./ErrorPage.css";
 
 type Props = {};
 
-const ErrorPage = (props: Props) => {
-  const navigate = useNavigate();
-
+const ErrorPage: FC<Props> = (props) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleClick = useCallback(() => {
     dispatch(resetUserState());

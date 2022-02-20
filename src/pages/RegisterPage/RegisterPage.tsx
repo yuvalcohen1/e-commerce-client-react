@@ -1,11 +1,11 @@
-import React from "react";
+import React, { FC } from "react";
 import Header from "../../components/Header/Header";
 import RegisterBox from "../../components/RegisterBox/RegisterBox";
 import "./RegisterPage.css";
 
 type Props = {};
 
-const RegisterPage = (props: Props) => {
+const RegisterPage: FC<Props> = (props) => {
   return (
     <div id="register-page">
       <Header />

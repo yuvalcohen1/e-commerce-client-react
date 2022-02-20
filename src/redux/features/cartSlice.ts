@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchOpenCart } from "../../api-client/carts-api";
+import { createCart, fetchOpenCart } from "../../api-client/carts-api";
 import { CartModel } from "../../models/Cart.model";
 import { RootState } from "../app/store";
 
@@ -25,6 +25,20 @@ export const getOpenCartFromApi = createAsyncThunk(
       const { data: cart } = response;
 
       return cart;
+    } catch (error: any) {
+      return thunkApi.rejectWithValue(error.response);
+    }
+  }
+);
+
+export const createNewCart = createAsyncThunk(
+  "cart/createNewCart",
+  async (_, thunkApi) => {
+    try {
+      const response = await createCart();
+      const { data: newCart } = response;
+
+      return newCart;
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.response);
     }
@@ -72,7 +86,22 @@ export const cartSlice = createSlice({
           state.statusCode = action.payload.status;
           state.errorMessage = action.payload.data;
         }
-      );
+      )
+      .addCase(createNewCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(createNewCart.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.statusCode = 200;
+        state.value = action.payload;
+        state.errorMessage = "";
+      })
+      .addCase(createNewCart.rejected, (state, action: PayloadAction<any>) => {
+        state.status = "failed";
+        state.value = null;
+        state.statusCode = action.payload.status;
+        state.errorMessage = action.payload.data;
+      });
   },
 });
 
