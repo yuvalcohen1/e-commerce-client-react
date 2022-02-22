@@ -1,27 +1,18 @@
-import React, { FC, useEffect } from "react";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { FC, useCallback } from "react";
 import { ProductModel } from "../../models/Product.model";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
-import {
-  getCartItems,
-  selectCartItemsState,
-} from "../../redux/features/cartItemsSlice";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { selectCartState } from "../../redux/features/cartSlice";
+import { selectCartItemsState } from "../../redux/features/cartItemsSlice";
 import "./ShoppingCart.css";
 
 type Props = {};
 
 const ShoppingCart: FC<Props> = (props) => {
   const dispatch = useAppDispatch();
-  const { value: cart } = useAppSelector(selectCartState);
   const { value: cartItems } = useAppSelector(selectCartItemsState);
 
-  useEffect(() => {
-    if (cart) {
-      dispatch(getCartItems(cart._id));
-    }
-  }, []);
+  const handleDeleteCartItem = useCallback((cartItemId: string) => {}, []);
 
   return (
     <div id="shopping-cart">
@@ -43,7 +34,10 @@ const ShoppingCart: FC<Props> = (props) => {
               </div>
               <div className="cart-item-quantity">{cartItem.quantity}</div>
             </div>
-            <div className="delete-cart-item-btn">
+            <div
+              className="delete-cart-item-btn"
+              onClick={() => handleDeleteCartItem(cartItem._id)}
+            >
               <FontAwesomeIcon icon={faTrash} />
             </div>
           </div>

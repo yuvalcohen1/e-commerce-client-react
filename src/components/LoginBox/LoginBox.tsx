@@ -1,16 +1,12 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
-import { getCartItems } from "../../redux/features/cartItemsSlice";
-import {
-  createNewCart,
-  getOpenCartFromApi,
-  selectCartState,
-} from "../../redux/features/cartSlice";
+import { selectCartState } from "../../redux/features/cartSlice";
 import {
   resetUserState,
   selectUserState,
 } from "../../redux/features/userSlice";
+import { getOpenCart } from "../../redux/thunks/cart-thunks";
 import LoginForm from "../LoginForm/LoginForm";
 import "./LoginBox.css";
 
@@ -27,7 +23,7 @@ const LoginBox: FC<Props> = (props) => {
 
   useEffect(() => {
     if (userState.value) {
-      dispatch(getOpenCartFromApi());
+      dispatch(getOpenCart());
     }
     if (userState.statusCode === 401) {
       setLoginErrorMessage("Email and password don't match");
@@ -39,7 +35,6 @@ const LoginBox: FC<Props> = (props) => {
       navigate("/error");
     }
   }, [
-    cart,
     userState.statusCode,
     userState.status,
     userState.value,
@@ -47,25 +42,13 @@ const LoginBox: FC<Props> = (props) => {
     dispatch,
   ]);
 
-  const handleStartShopping = useCallback(async () => {
-    const { payload: newCart } = await dispatch(createNewCart());
-
-    if (cart && newCart) {
-      navigate("/shopping");
-    }
-  }, [dispatch, navigate, cart]);
-
-  const handleResumeShopping = useCallback(() => {
-    navigate("/shopping");
-  }, [navigate]);
-
   return (
     <div id="login-access-box">
       {userState.value ? (
         cart ? (
-          <button onClick={handleResumeShopping}>Resume Shopping</button>
+          <button onClick={() => navigate("/shopping")}>Resume Shopping</button>
         ) : (
-          <button onClick={handleStartShopping}>Start Shopping</button>
+          <button onClick={() => navigate("/shopping")}>Start Shopping</button>
         )
       ) : (
         <>

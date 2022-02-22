@@ -1,8 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AxiosResponse } from "axios";
-import { createCart, fetchOpenCart } from "../../api-client/carts-api";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CartModel } from "../../models/Cart.model";
 import { RootState } from "../app/store";
+import { createNewCart, getOpenCart } from "../thunks/cart-thunks";
 
 export interface CartState {
   value: CartModel | null;
@@ -17,35 +16,6 @@ const initialState: CartState = {
   statusCode: 200,
   errorMessage: "",
 };
-
-export const getOpenCartFromApi = createAsyncThunk(
-  "cart/getOpenCart",
-  async (_, thunkApi) => {
-    try {
-      const response = await fetchOpenCart();
-      const { data: cart } = response;
-
-      return cart;
-    } catch (error: any) {
-      return thunkApi.rejectWithValue(error.response);
-    }
-  }
-);
-
-export const createNewCart = createAsyncThunk<
-  CartModel,
-  undefined,
-  { rejectValue: AxiosResponse }
->("cart/createNewCart", async (_, thunkApi) => {
-  try {
-    const response = await createCart();
-    const { data: newCart } = response;
-
-    return newCart;
-  } catch (error: any) {
-    return thunkApi.rejectWithValue(error.response);
-  }
-});
 
 export const cartSlice = createSlice({
   name: "cart",
@@ -71,24 +41,21 @@ export const cartSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getOpenCartFromApi.pending, (state) => {
+      .addCase(getOpenCart.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getOpenCartFromApi.fulfilled, (state, action) => {
+      .addCase(getOpenCart.fulfilled, (state, action) => {
         state.status = "idle";
         state.statusCode = 200;
         state.value = action.payload;
         state.errorMessage = "";
       })
-      .addCase(
-        getOpenCartFromApi.rejected,
-        (state, action: PayloadAction<any>) => {
-          state.status = "failed";
-          state.value = null;
-          state.statusCode = action.payload.status;
-          state.errorMessage = action.payload.data;
-        }
-      )
+      .addCase(getOpenCart.rejected, (state, action: PayloadAction<any>) => {
+        state.status = "failed";
+        state.value = null;
+        state.statusCode = action.payload.status;
+        state.errorMessage = action.payload.data;
+      })
       .addCase(createNewCart.pending, (state) => {
         state.status = "loading";
       })

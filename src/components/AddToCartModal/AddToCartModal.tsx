@@ -2,8 +2,8 @@ import React, { FC, useCallback, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { ProductModel } from "../../models/Product.model";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
-import { addNewCartItem } from "../../redux/features/cartItemsSlice";
 import { selectCartState } from "../../redux/features/cartSlice";
+import { addNewCartItem } from "../../redux/thunks/cart-items-thunks";
 import "./AddToCartModal.css";
 
 interface Props {

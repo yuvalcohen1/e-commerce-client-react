@@ -15,7 +15,7 @@ const App: FC = () => {
 
   useEffect(() => {
     uploadFromLocalStorage(dispatch);
-  }, [dispatch]);
+  }, []);
 
   return (
     <BrowserRouter>
