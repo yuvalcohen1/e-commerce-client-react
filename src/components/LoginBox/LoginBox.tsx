@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useState } from "react";
-import { useCallback } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
+import { getCartItems } from "../../redux/features/cartItemsSlice";
 import {
   createNewCart,
   getOpenCartFromApi,
@@ -29,6 +29,9 @@ const LoginBox: FC<Props> = (props) => {
     if (userState.value) {
       dispatch(getOpenCartFromApi());
     }
+    if (cart) {
+      dispatch(getCartItems(cart._id));
+    }
     if (userState.statusCode === 401) {
       setLoginErrorMessage("Email and password don't match");
       setTimeout(() => {
@@ -39,6 +42,7 @@ const LoginBox: FC<Props> = (props) => {
       navigate("/error");
     }
   }, [
+    cart,
     userState.statusCode,
     userState.status,
     userState.value,
@@ -49,10 +53,10 @@ const LoginBox: FC<Props> = (props) => {
   const handleStartShopping = useCallback(async () => {
     const { payload: newCart } = await dispatch(createNewCart());
 
-    if (newCart) {
+    if (cart && newCart) {
       navigate("/shopping");
     }
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, cart]);
 
   const handleResumeShopping = useCallback(() => {
     navigate("/shopping");

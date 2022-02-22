@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AxiosResponse } from "axios";
 import { createCart, fetchOpenCart } from "../../api-client/carts-api";
 import { CartModel } from "../../models/Cart.model";
 import { RootState } from "../app/store";
@@ -31,19 +32,20 @@ export const getOpenCartFromApi = createAsyncThunk(
   }
 );
 
-export const createNewCart = createAsyncThunk(
-  "cart/createNewCart",
-  async (_, thunkApi) => {
-    try {
-      const response = await createCart();
-      const { data: newCart } = response;
+export const createNewCart = createAsyncThunk<
+  CartModel,
+  undefined,
+  { rejectValue: AxiosResponse }
+>("cart/createNewCart", async (_, thunkApi) => {
+  try {
+    const response = await createCart();
+    const { data: newCart } = response;
 
-      return newCart;
-    } catch (error: any) {
-      return thunkApi.rejectWithValue(error.response);
-    }
+    return newCart;
+  } catch (error: any) {
+    return thunkApi.rejectWithValue(error.response);
   }
-);
+});
 
 export const cartSlice = createSlice({
   name: "cart",
