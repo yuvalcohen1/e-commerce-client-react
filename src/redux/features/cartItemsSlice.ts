@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError, AxiosResponse } from "axios";
 import { addCartItem, fetchCartItems } from "../../api-client/cart-iteams-api";
 import { AddToCartBodyModel } from "../../models/AddToCartBody.model";
@@ -52,12 +52,12 @@ export const cartItemsSlice = createSlice({
   name: "cartItems",
   initialState,
   reducers: {
-    // getCartSync: (state, action: PayloadAction<CartItemModel[]>) => {
-    //   state.status = "idle";
-    //   state.statusCode = 200;
-    //   state.value = action.payload;
-    //   state.errorMessage = "";
-    // },
+    getCartItemsSync: (state, action: PayloadAction<CartItemModel[]>) => {
+      state.status = "idle";
+      state.statusCode = 200;
+      state.value = action.payload;
+      state.errorMessage = "";
+    },
     // increment: (state) => {
     //   // Redux Toolkit allows us to write "mutating" logic in reducers. It
     //   // doesn't actually mutate the state because it uses the Immer library,
@@ -105,7 +105,7 @@ export const cartItemsSlice = createSlice({
   },
 });
 
-// export const {  } = cartItemsSlice.actions;
+export const { getCartItemsSync } = cartItemsSlice.actions;
 
 export const selectCartItemsState = (state: RootState) => state.cartItems;
 

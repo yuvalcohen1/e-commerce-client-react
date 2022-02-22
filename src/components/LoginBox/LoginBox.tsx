@@ -29,9 +29,6 @@ const LoginBox: FC<Props> = (props) => {
     if (userState.value) {
       dispatch(getOpenCartFromApi());
     }
-    if (cart) {
-      dispatch(getCartItems(cart._id));
-    }
     if (userState.statusCode === 401) {
       setLoginErrorMessage("Email and password don't match");
       setTimeout(() => {
