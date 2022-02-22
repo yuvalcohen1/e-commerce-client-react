@@ -6,6 +6,7 @@ import {
   getProductsByCategoryId,
   selectProductsState,
 } from "../../redux/features/productsSlice";
+import AddToCartModal from "../AddToCartModal/AddToCartModal";
 import "./Products.css";
 
 type Props = {};
@@ -36,7 +37,7 @@ const Products: FC<Props> = (props) => {
           </div>
           <div className="product-name">{product.productName}</div>
           <div className="product-price">{product.price}</div>
-          <button>Add To Cart</button>
+          <AddToCartModal product={product} />
         </div>
       ))}
     </div>

@@ -1,6 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AxiosError } from "axios";
-import { fetchCartItems } from "../../api-client/cart-iteams-api";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { AxiosError, AxiosResponse } from "axios";
+import { addCartItem, fetchCartItems } from "../../api-client/cart-iteams-api";
+import { AddToCartBodyModel } from "../../models/AddToCartBody.model";
 import { CartItemModel } from "../../models/CartItem.model";
 import { RootState } from "../app/store";
 
@@ -32,6 +33,20 @@ export const getCartItems = createAsyncThunk<
     return thunkApi.rejectWithValue(error.response);
   }
 });
+
+export const addNewCartItem = createAsyncThunk(
+  "cartItems/addNewCartItem",
+  async (addCartItemBody: AddToCartBodyModel, thunkApi) => {
+    try {
+      const response = await addCartItem(addCartItemBody);
+      const { data: cartItems } = response;
+
+      return cartItems;
+    } catch (error: any) {
+      return thunkApi.rejectWithValue(error.response);
+    }
+  }
+);
 
 export const cartItemsSlice = createSlice({
   name: "cartItems",
@@ -71,6 +86,21 @@ export const cartItemsSlice = createSlice({
         state.value = [];
         state.statusCode = action.payload!.status;
         state.errorMessage = action.payload!.data;
+      })
+      .addCase(addNewCartItem.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(addNewCartItem.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.statusCode = 200;
+        state.value = action.payload;
+        state.errorMessage = "";
+      })
+      .addCase(addNewCartItem.rejected, (state, action) => {
+        state.status = "failed";
+        state.value = [];
+        state.statusCode = (action.payload as AxiosResponse).status;
+        state.errorMessage = (action.payload as AxiosResponse).data;
       });
   },
 });
