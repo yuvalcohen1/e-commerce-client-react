@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import { CartItemModel } from "../../models/CartItem.model";
 import { RootState } from "../app/store";
-import { addNewCartItem, getCartItems } from "../thunks/cart-items-thunks";
+import { addCartItem, fetchCartItems } from "../thunks/cart-items-thunks";
 
 export interface CartItemsState {
   value: CartItemModel[];
@@ -42,31 +42,31 @@ export const cartItemsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getCartItems.pending, (state) => {
+      .addCase(fetchCartItems.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getCartItems.fulfilled, (state, action) => {
+      .addCase(fetchCartItems.fulfilled, (state, action) => {
         state.status = "idle";
         state.statusCode = 200;
         state.value = action.payload;
         state.errorMessage = "";
       })
-      .addCase(getCartItems.rejected, (state, action) => {
+      .addCase(fetchCartItems.rejected, (state, action) => {
         state.status = "failed";
         state.value = [];
         state.statusCode = action.payload!.status;
         state.errorMessage = action.payload!.data;
       })
-      .addCase(addNewCartItem.pending, (state) => {
+      .addCase(addCartItem.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(addNewCartItem.fulfilled, (state, action) => {
+      .addCase(addCartItem.fulfilled, (state, action) => {
         state.status = "idle";
         state.statusCode = 200;
         state.value = action.payload;
         state.errorMessage = "";
       })
-      .addCase(addNewCartItem.rejected, (state, action) => {
+      .addCase(addCartItem.rejected, (state, action) => {
         state.status = "failed";
         state.value = [];
         state.statusCode = (action.payload as AxiosResponse).status;

@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ProductModel } from "../../models/Product.model";
+import { RootState } from "../app/store";
 import {
   fetchAllProducts,
   fetchProductsByCategoryId,
-} from "../../api-client/products-api";
-import { ProductModel } from "../../models/Product.model";
-import { RootState } from "../app/store";
+} from "../thunks/products-thunks";
 
 export interface ProductsState {
   value: ProductModel[];
@@ -19,34 +19,6 @@ const initialState: ProductsState = {
   statusCode: 200,
   errorMessage: "",
 };
-
-export const getProductsByCategoryId = createAsyncThunk(
-  "products/getProductsByCategoryId",
-  async (categoryId: string, thunkApi) => {
-    try {
-      const response = await fetchProductsByCategoryId(categoryId);
-      const { data: products } = response;
-
-      return products;
-    } catch (error: any) {
-      return thunkApi.rejectWithValue(error.response);
-    }
-  }
-);
-
-export const getAllProducts = createAsyncThunk(
-  "products/getAllProducts",
-  async (_, thunkApi) => {
-    try {
-      const response = await fetchAllProducts();
-      const { data: products } = response;
-
-      return products;
-    } catch (error: any) {
-      return thunkApi.rejectWithValue(error.response);
-    }
-  }
-);
 
 export const productsSlice = createSlice({
   name: "products",
@@ -66,17 +38,17 @@ export const productsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getProductsByCategoryId.pending, (state) => {
+      .addCase(fetchProductsByCategoryId.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getProductsByCategoryId.fulfilled, (state, action) => {
+      .addCase(fetchProductsByCategoryId.fulfilled, (state, action) => {
         state.status = "idle";
         state.statusCode = 200;
         state.value = action.payload;
         state.errorMessage = "";
       })
       .addCase(
-        getProductsByCategoryId.rejected,
+        fetchProductsByCategoryId.rejected,
         (state, action: PayloadAction<any>) => {
           state.status = "failed";
           state.value = [];
@@ -84,21 +56,24 @@ export const productsSlice = createSlice({
           state.errorMessage = action.payload.data;
         }
       )
-      .addCase(getAllProducts.pending, (state) => {
+      .addCase(fetchAllProducts.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getAllProducts.fulfilled, (state, action) => {
+      .addCase(fetchAllProducts.fulfilled, (state, action) => {
         state.status = "idle";
         state.statusCode = 200;
         state.value = action.payload;
         state.errorMessage = "";
       })
-      .addCase(getAllProducts.rejected, (state, action: PayloadAction<any>) => {
-        state.status = "failed";
-        state.value = [];
-        state.statusCode = action.payload.status;
-        state.errorMessage = action.payload.data;
-      });
+      .addCase(
+        fetchAllProducts.rejected,
+        (state, action: PayloadAction<any>) => {
+          state.status = "failed";
+          state.value = [];
+          state.statusCode = action.payload.status;
+          state.errorMessage = action.payload.data;
+        }
+      );
   },
 });
 

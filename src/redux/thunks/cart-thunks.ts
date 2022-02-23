@@ -1,33 +1,39 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AxiosResponse } from "axios";
-import { createCart, fetchOpenCart } from "../../api-client/carts-api";
 import { CartModel } from "../../models/Cart.model";
+import axios, { AxiosResponse } from "axios";
 
-export const createNewCart = createAsyncThunk<
+const api = axios.create({
+  baseURL: "http://localhost:4000/shopping-carts",
+});
+
+export const fetchOpenCart = createAsyncThunk<
   CartModel,
   undefined,
   { rejectValue: AxiosResponse }
->("cart/createNewCart", async (_, thunkApi) => {
+>("cart/fetchOpenCart", async (_, thunkApi) => {
   try {
-    const response = await createCart();
-    const { data: newCart } = response;
+    const { data: cart } = await api.get("/", { withCredentials: true });
+
+    return cart;
+  } catch (error: any) {
+    return thunkApi.rejectWithValue(error.response);
+  }
+});
+
+export const createCart = createAsyncThunk<
+  CartModel,
+  undefined,
+  { rejectValue: AxiosResponse }
+>("cart/createCart", async (_, thunkApi) => {
+  try {
+    const { data: newCart } = await api.post(
+      "/create-cart",
+      {},
+      { withCredentials: true }
+    );
 
     return newCart;
   } catch (error: any) {
     return thunkApi.rejectWithValue(error.response);
   }
 });
-
-export const getOpenCart = createAsyncThunk(
-  "cart/getOpenCart",
-  async (_, thunkApi) => {
-    try {
-      const response = await fetchOpenCart();
-      const { data: cart } = response;
-
-      return cart;
-    } catch (error: any) {
-      return thunkApi.rejectWithValue(error.response);
-    }
-  }
-);

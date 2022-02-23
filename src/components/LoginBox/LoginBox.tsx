@@ -6,7 +6,7 @@ import {
   resetUserState,
   selectUserState,
 } from "../../redux/features/userSlice";
-import { getOpenCart } from "../../redux/thunks/cart-thunks";
+import { fetchOpenCart } from "../../redux/thunks/cart-thunks";
 import LoginForm from "../LoginForm/LoginForm";
 import "./LoginBox.css";
 
@@ -23,7 +23,7 @@ const LoginBox: FC<Props> = (props) => {
 
   useEffect(() => {
     if (userState.value) {
-      dispatch(getOpenCart());
+      dispatch(fetchOpenCart());
     }
     if (userState.statusCode === 401) {
       setLoginErrorMessage("Email and password don't match");

@@ -3,7 +3,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { ProductModel } from "../../models/Product.model";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
 import { selectCartState } from "../../redux/features/cartSlice";
-import { addNewCartItem } from "../../redux/thunks/cart-items-thunks";
+import { addCartItem } from "../../redux/thunks/cart-items-thunks";
 import "./AddToCartModal.css";
 
 interface Props {
@@ -28,7 +28,7 @@ const AddToCartModal: FC<Props> = ({ product }) => {
         quantity: Number(quantity),
       };
 
-      dispatch(addNewCartItem(addCartItemBody));
+      dispatch(addCartItem(addCartItemBody));
       setQuantity("");
       handleClose();
     }

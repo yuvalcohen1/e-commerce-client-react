@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CartModel } from "../../models/Cart.model";
 import { RootState } from "../app/store";
-import { createNewCart, getOpenCart } from "../thunks/cart-thunks";
+import { createCart, fetchOpenCart } from "../thunks/cart-thunks";
 
 export interface CartState {
   value: CartModel | null;
@@ -41,31 +41,31 @@ export const cartSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getOpenCart.pending, (state) => {
+      .addCase(fetchOpenCart.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getOpenCart.fulfilled, (state, action) => {
+      .addCase(fetchOpenCart.fulfilled, (state, action) => {
         state.status = "idle";
         state.statusCode = 200;
         state.value = action.payload;
         state.errorMessage = "";
       })
-      .addCase(getOpenCart.rejected, (state, action: PayloadAction<any>) => {
+      .addCase(fetchOpenCart.rejected, (state, action: PayloadAction<any>) => {
         state.status = "failed";
         state.value = null;
         state.statusCode = action.payload.status;
         state.errorMessage = action.payload.data;
       })
-      .addCase(createNewCart.pending, (state) => {
+      .addCase(createCart.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(createNewCart.fulfilled, (state, action) => {
+      .addCase(createCart.fulfilled, (state, action) => {
         state.status = "idle";
         state.statusCode = 200;
         state.value = action.payload;
         state.errorMessage = "";
       })
-      .addCase(createNewCart.rejected, (state, action: PayloadAction<any>) => {
+      .addCase(createCart.rejected, (state, action: PayloadAction<any>) => {
         state.status = "failed";
         state.value = null;
         state.statusCode = action.payload.status;

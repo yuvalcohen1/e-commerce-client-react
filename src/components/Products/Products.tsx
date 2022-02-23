@@ -1,11 +1,11 @@
 import React, { FC, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
 import { selectCategoriesState } from "../../redux/features/categoriesSlice";
+import { selectProductsState } from "../../redux/features/productsSlice";
 import {
-  getAllProducts,
-  getProductsByCategoryId,
-  selectProductsState,
-} from "../../redux/features/productsSlice";
+  fetchAllProducts,
+  fetchProductsByCategoryId,
+} from "../../redux/thunks/products-thunks";
 import AddToCartModal from "../AddToCartModal/AddToCartModal";
 import "./Products.css";
 
@@ -19,8 +19,8 @@ const Products: FC<Props> = (props) => {
   useEffect(() => {
     if (selectedCategory) {
       selectedCategory.categoryName === "All"
-        ? dispatch(getAllProducts())
-        : dispatch(getProductsByCategoryId(selectedCategory._id));
+        ? dispatch(fetchAllProducts())
+        : dispatch(fetchProductsByCategoryId(selectedCategory._id));
     }
   }, [dispatch, selectedCategory]);
 

@@ -1,12 +1,10 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { UserModel } from "../../models/User.model";
+import { RootState } from "../app/store";
 import {
   fetchUserDetailsAndSetJwtCookieByLogin,
   fetchUserDetailsAndSetJwtCookieByRegister,
-} from "../../api-client/users-api";
-import { LoginDetailsModel } from "../../models/LoginDetails.model";
-import { RegisterDetailsModel } from "../../models/RegisterDetails.model";
-import { UserModel } from "../../models/User.model";
-import { RootState } from "../app/store";
+} from "../thunks/user-thunks";
 
 export interface UserState {
   value: UserModel | null;
@@ -21,43 +19,6 @@ const initialState: UserState = {
   statusCode: 200,
   errorMessage: "",
 };
-
-export const fetchUserDetailsByLogin = createAsyncThunk(
-  "user/fetchUserDetailsByLogin",
-  async (loginDetails: LoginDetailsModel, thunkApi) => {
-    try {
-      const response = await fetchUserDetailsAndSetJwtCookieByLogin(
-        loginDetails
-      );
-      const { data: user } = response;
-
-      return user;
-    } catch (error: any) {
-      return thunkApi.rejectWithValue(error.response);
-    }
-  }
-);
-
-export const fetchUserDetailsByRegister = createAsyncThunk(
-  "user/fetchUserDetailsByRegister",
-  async (registerDetails: RegisterDetailsModel, thunkApi) => {
-    try {
-      const response = await fetchUserDetailsAndSetJwtCookieByRegister(
-        registerDetails
-      );
-      const { data: user } = response;
-
-      return user;
-    } catch (error: any) {
-      const rejectValue = {
-        data: error.response.data,
-        status: error.response.status,
-      };
-
-      return thunkApi.rejectWithValue(rejectValue);
-    }
-  }
-);
 
 export const userSlice = createSlice({
   name: "user",
@@ -89,17 +50,20 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchUserDetailsByLogin.pending, (state) => {
+      .addCase(fetchUserDetailsAndSetJwtCookieByLogin.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchUserDetailsByLogin.fulfilled, (state, action) => {
-        state.status = "idle";
-        state.statusCode = 200;
-        state.value = action.payload;
-        state.errorMessage = "";
-      })
       .addCase(
-        fetchUserDetailsByLogin.rejected,
+        fetchUserDetailsAndSetJwtCookieByLogin.fulfilled,
+        (state, action) => {
+          state.status = "idle";
+          state.statusCode = 200;
+          state.value = action.payload;
+          state.errorMessage = "";
+        }
+      )
+      .addCase(
+        fetchUserDetailsAndSetJwtCookieByLogin.rejected,
         (state, action: PayloadAction<any>) => {
           state.status = "failed";
           state.value = null;
@@ -107,17 +71,20 @@ export const userSlice = createSlice({
           state.errorMessage = action.payload.data;
         }
       )
-      .addCase(fetchUserDetailsByRegister.pending, (state) => {
+      .addCase(fetchUserDetailsAndSetJwtCookieByRegister.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchUserDetailsByRegister.fulfilled, (state, action) => {
-        state.status = "idle";
-        state.statusCode = 200;
-        state.value = action.payload;
-        state.errorMessage = "";
-      })
       .addCase(
-        fetchUserDetailsByRegister.rejected,
+        fetchUserDetailsAndSetJwtCookieByRegister.fulfilled,
+        (state, action) => {
+          state.status = "idle";
+          state.statusCode = 200;
+          state.value = action.payload;
+          state.errorMessage = "";
+        }
+      )
+      .addCase(
+        fetchUserDetailsAndSetJwtCookieByRegister.rejected,
         (state, action: PayloadAction<any>) => {
           state.status = "failed";
           state.value = null;

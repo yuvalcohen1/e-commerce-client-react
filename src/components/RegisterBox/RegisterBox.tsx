@@ -4,10 +4,10 @@ import { RegisterDetailsModel } from "../../models/RegisterDetails.model";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
 import { selectCitiesState } from "../../redux/features/citiesSlice";
 import {
-  fetchUserDetailsByRegister,
   resetUserState,
   selectUserState,
 } from "../../redux/features/userSlice";
+import { fetchUserDetailsAndSetJwtCookieByRegister } from "../../redux/thunks/user-thunks";
 import "./RegisterBox.css";
 
 type Props = {};
@@ -78,7 +78,7 @@ const RegisterBox = (props: Props) => {
         street,
       };
 
-      dispatch(fetchUserDetailsByRegister(registerDetails));
+      dispatch(fetchUserDetailsAndSetJwtCookieByRegister(registerDetails));
 
       setIdNum("");
       setEmail("");

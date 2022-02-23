@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchCategories } from "../../api-client/categories-api";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CategoryModel } from "../../models/Category.model";
 import { RootState } from "../app/store";
+import { fetchCategories } from "../thunks/categories-thunks";
 
 export interface CategoriesState {
   value: CategoryModel[] | null;
@@ -18,20 +18,6 @@ const initialState: CategoriesState = {
   statusCode: 200,
   errorMessage: "",
 };
-
-export const getCategories = createAsyncThunk(
-  "categories/getCategories",
-  async (_, thunkApi) => {
-    try {
-      const response = await fetchCategories();
-      const { data: categories } = response;
-
-      return categories;
-    } catch (error: any) {
-      return thunkApi.rejectWithValue(error.response);
-    }
-  }
-);
 
 export const categoriesSlice = createSlice({
   name: "categories",
@@ -60,10 +46,10 @@ export const categoriesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getCategories.pending, (state) => {
+      .addCase(fetchCategories.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(getCategories.fulfilled, (state, action) => {
+      .addCase(fetchCategories.fulfilled, (state, action) => {
         state.status = "idle";
         state.statusCode = 200;
         state.value = action.payload;
@@ -72,11 +58,13 @@ export const categoriesSlice = createSlice({
           (category) => category.categoryName === "All"
         )!;
       })
-      .addCase(getCategories.rejected, (state, action: PayloadAction<any>) => {
+      .addCase(fetchCategories.rejected, (state, action) => {
         state.status = "failed";
         state.value = null;
-        state.statusCode = action.payload.status;
-        state.errorMessage = action.payload.data;
+        if (action.payload) {
+          state.statusCode = action.payload.status;
+          state.errorMessage = action.payload.data;
+        }
       });
   },
 });

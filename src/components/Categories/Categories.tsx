@@ -2,10 +2,10 @@ import React, { FC, useCallback, useEffect } from "react";
 import { CategoryModel } from "../../models/Category.model";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
 import {
-  getCategories,
   selectCategoriesState,
   selectCategory,
 } from "../../redux/features/categoriesSlice";
+import { fetchCategories } from "../../redux/thunks/categories-thunks";
 import "./Categories.css";
 
 type Props = {};
@@ -17,7 +17,7 @@ const Categories: FC<Props> = (props) => {
   );
 
   useEffect(() => {
-    dispatch(getCategories());
+    dispatch(fetchCategories());
   }, [dispatch]);
 
   const onCategoryClick = useCallback(

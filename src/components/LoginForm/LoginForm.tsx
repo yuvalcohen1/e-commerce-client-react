@@ -1,7 +1,7 @@
 import React, { FC, FormEvent, useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../redux/app/hooks";
-import { fetchUserDetailsByLogin } from "../../redux/features/userSlice";
+import { fetchUserDetailsAndSetJwtCookieByLogin } from "../../redux/thunks/user-thunks";
 import "./LoginForm.css";
 
 interface Props {
@@ -20,7 +20,7 @@ const LoginForm: FC<Props> = ({ loginErrorMessage }) => {
 
       const loginDetails = { email, password };
 
-      dispatch(fetchUserDetailsByLogin(loginDetails));
+      dispatch(fetchUserDetailsAndSetJwtCookieByLogin(loginDetails));
     },
     [email, password, dispatch]
   );

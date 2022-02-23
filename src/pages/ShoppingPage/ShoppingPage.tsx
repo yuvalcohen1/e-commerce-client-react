@@ -5,8 +5,8 @@ import Products from "../../components/Products/Products";
 import ShoppingCart from "../../components/ShoppingCart/ShoppingCart";
 import { CartModel } from "../../models/Cart.model";
 import { useAppDispatch } from "../../redux/app/hooks";
-import { getCartItems } from "../../redux/thunks/cart-items-thunks";
-import { createNewCart, getOpenCart } from "../../redux/thunks/cart-thunks";
+import { fetchCartItems } from "../../redux/thunks/cart-items-thunks";
+import { createCart, fetchOpenCart } from "../../redux/thunks/cart-thunks";
 import "./ShoppingPage.css";
 
 type Props = {};
@@ -16,12 +16,12 @@ const ShoppingPage: FC<Props> = (props) => {
 
   useEffect(() => {
     const createNewCartIfNecessaryAndFetchCartItems = async () => {
-      const { payload: cart } = await dispatch(getOpenCart());
+      const { payload: cart } = await dispatch(fetchOpenCart());
       if (!cart) {
-        await dispatch(createNewCart());
+        await dispatch(createCart());
         return;
       }
-      await dispatch(getCartItems((cart as CartModel)._id));
+      await dispatch(fetchCartItems((cart as CartModel)._id));
     };
     createNewCartIfNecessaryAndFetchCartItems();
   }, []);
