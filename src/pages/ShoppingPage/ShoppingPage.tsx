@@ -23,6 +23,7 @@ const ShoppingPage: FC<Props> = (props) => {
       }
       await dispatch(fetchCartItems((cart as CartModel)._id));
     };
+
     createNewCartIfNecessaryAndFetchCartItems();
   }, []);
 

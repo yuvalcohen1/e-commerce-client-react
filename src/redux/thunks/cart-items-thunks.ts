@@ -43,3 +43,23 @@ export const addCartItem = createAsyncThunk(
     }
   }
 );
+
+export const deleteCartItem = createAsyncThunk<
+  CartItemModel[],
+  { cartId: string; cartItemId: string },
+  { rejectValue: AxiosResponse }
+>("cartItems/deleteCartItem", async (deleteCartItemParamsObj, thunkApi) => {
+  try {
+    const { cartId, cartItemId } = deleteCartItemParamsObj;
+    const { data: updatedCartItems } = await api.delete<CartItemModel[]>(
+      `/delete-cart-item/${cartId}/${cartItemId}`,
+      {
+        withCredentials: true,
+      }
+    );
+
+    return updatedCartItems;
+  } catch (error: any) {
+    return thunkApi.rejectWithValue(error.response);
+  }
+});

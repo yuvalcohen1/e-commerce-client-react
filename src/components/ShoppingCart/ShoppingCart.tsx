@@ -4,15 +4,31 @@ import React, { FC, useCallback } from "react";
 import { ProductModel } from "../../models/Product.model";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
 import { selectCartItemsState } from "../../redux/features/cartItemsSlice";
+import { selectCartState } from "../../redux/features/cartSlice";
+import { deleteCartItem } from "../../redux/thunks/cart-items-thunks";
 import "./ShoppingCart.css";
 
-type Props = {};
+interface Props {}
 
-const ShoppingCart: FC<Props> = (props) => {
+const ShoppingCart: FC<Props> = () => {
   const dispatch = useAppDispatch();
   const { value: cartItems } = useAppSelector(selectCartItemsState);
+  const { value: cart } = useAppSelector(selectCartState);
 
-  const handleDeleteCartItem = useCallback((cartItemId: string) => {}, []);
+  const handleDeleteCartItem = useCallback(
+    async (cartItemId: string) => {
+      console.log("in");
+      console.log(cart);
+
+      if (cart) {
+        console.log("in in");
+
+        const deleteCartItemParamsObj = { cartId: cart._id, cartItemId };
+        await dispatch(deleteCartItem(deleteCartItemParamsObj));
+      }
+    },
+    [cart, dispatch]
+  );
 
   return (
     <div id="shopping-cart">
