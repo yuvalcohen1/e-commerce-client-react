@@ -63,3 +63,19 @@ export const deleteCartItem = createAsyncThunk<
     return thunkApi.rejectWithValue(error.response);
   }
 });
+
+export const emptyCart = createAsyncThunk<
+  undefined,
+  string,
+  { rejectValue: AxiosResponse }
+>("cartItems/emptyCart", async (cartId, thunkApi) => {
+  try {
+    await api.delete(`/empty-cart-items/${cartId}`, {
+      withCredentials: true,
+    });
+
+    return;
+  } catch (error: any) {
+    return thunkApi.rejectWithValue(error.response);
+  }
+});

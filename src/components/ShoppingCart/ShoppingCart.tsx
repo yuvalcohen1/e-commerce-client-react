@@ -5,7 +5,10 @@ import { ProductModel } from "../../models/Product.model";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
 import { selectCartItemsState } from "../../redux/features/cartItemsSlice";
 import { selectCartState } from "../../redux/features/cartSlice";
-import { deleteCartItem } from "../../redux/thunks/cart-items-thunks";
+import {
+  deleteCartItem,
+  emptyCart,
+} from "../../redux/thunks/cart-items-thunks";
 import "./ShoppingCart.css";
 
 interface Props {}
@@ -17,18 +20,19 @@ const ShoppingCart: FC<Props> = () => {
 
   const handleDeleteCartItem = useCallback(
     async (cartItemId: string) => {
-      console.log("in");
-      console.log(cart);
-
       if (cart) {
-        console.log("in in");
-
         const deleteCartItemParamsObj = { cartId: cart._id, cartItemId };
         await dispatch(deleteCartItem(deleteCartItemParamsObj));
       }
     },
     [cart, dispatch]
   );
+
+  const onEmptyCart = useCallback(async () => {
+    if (cart) {
+      await dispatch(emptyCart(cart._id));
+    }
+  }, [cart, dispatch]);
 
   return (
     <div id="shopping-cart">
@@ -59,7 +63,9 @@ const ShoppingCart: FC<Props> = () => {
           </div>
         ))}
       </div>
-      <button id="empty-cart-btn">Empty Cart</button>
+      <button id="empty-cart-btn" onClick={() => onEmptyCart()}>
+        Empty Cart
+      </button>
       <button id="checkout-btn">Checkout</button>
     </div>
   );

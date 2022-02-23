@@ -5,6 +5,7 @@ import { RootState } from "../app/store";
 import {
   addCartItem,
   deleteCartItem,
+  emptyCart,
   fetchCartItems,
 } from "../thunks/cart-items-thunks";
 
@@ -86,6 +87,21 @@ export const cartItemsSlice = createSlice({
         state.errorMessage = "";
       })
       .addCase(deleteCartItem.rejected, (state, action) => {
+        state.status = "failed";
+        state.value = [];
+        state.statusCode = action.payload!.status;
+        state.errorMessage = action.payload!.data;
+      })
+      .addCase(emptyCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(emptyCart.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.statusCode = 200;
+        state.value = [];
+        state.errorMessage = "";
+      })
+      .addCase(emptyCart.rejected, (state, action) => {
         state.status = "failed";
         state.value = [];
         state.statusCode = action.payload!.status;
