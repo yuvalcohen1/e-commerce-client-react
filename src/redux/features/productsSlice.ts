@@ -4,6 +4,7 @@ import { RootState } from "../app/store";
 import {
   fetchAllProducts,
   fetchProductsByCategoryId,
+  fetchProductsByProductName,
 } from "../thunks/products-thunks";
 
 export interface ProductsState {
@@ -73,7 +74,24 @@ export const productsSlice = createSlice({
           state.statusCode = action.payload.status;
           state.errorMessage = action.payload.data;
         }
-      );
+      )
+      .addCase(fetchProductsByProductName.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchProductsByProductName.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.statusCode = 200;
+        state.value = action.payload;
+        state.errorMessage = "";
+      })
+      .addCase(fetchProductsByProductName.rejected, (state, action) => {
+        state.status = "failed";
+        state.value = [];
+        if (action.payload) {
+          state.statusCode = action.payload.status;
+          state.errorMessage = action.payload.data;
+        }
+      });
   },
 });
 

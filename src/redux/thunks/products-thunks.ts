@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+import { ProductModel } from "../../models/Product.model";
 
 const api = axios.create({
   baseURL: "http://localhost:4000/products",
@@ -27,6 +28,28 @@ export const fetchProductsByCategoryId = createAsyncThunk(
       const { data: products } = await api.get(`/${categoryId}`, {
         withCredentials: true,
       });
+
+      return products;
+    } catch (error: any) {
+      return thunkApi.rejectWithValue(error.response);
+    }
+  }
+);
+
+export const fetchProductsByProductName = createAsyncThunk<
+  ProductModel[],
+  string,
+  { rejectValue: AxiosResponse }
+>(
+  "products/fetchProductsByProductName",
+  async (productName: string, thunkApi) => {
+    try {
+      const { data: products } = await api.get<ProductModel[]>(
+        `/search/${productName}`,
+        {
+          withCredentials: true,
+        }
+      );
 
       return products;
     } catch (error: any) {

@@ -26,6 +26,9 @@ export const categoriesSlice = createSlice({
     selectCategory: (state, action: PayloadAction<CategoryModel | null>) => {
       state.selectedCategory = action.payload;
     },
+    setSelectedCategoryToNull: (state) => {
+      state.selectedCategory = null;
+    },
     // resetUserState: (state) => {
     //   state.status = "idle";
     //   state.statusCode = 200;
@@ -69,7 +72,8 @@ export const categoriesSlice = createSlice({
   },
 });
 
-export const { selectCategory } = categoriesSlice.actions;
+export const { selectCategory, setSelectedCategoryToNull } =
+  categoriesSlice.actions;
 
 export const selectCategoriesState = (state: RootState) => state.categories;
 

@@ -1,14 +1,28 @@
-import React from "react";
-import { useAppSelector } from "../../redux/app/hooks";
+import React, { useCallback, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
+import { setSelectedCategoryToNull } from "../../redux/features/categoriesSlice";
 import { selectUserState } from "../../redux/features/userSlice";
+import { fetchProductsByProductName } from "../../redux/thunks/products-thunks";
 import "./Header.css";
 
 type Props = {};
 
 const Header = (props: Props) => {
+  const [searchProductInput, setSearchProductInput] = useState("");
+
+  const dispatch = useAppDispatch();
   const { value: user } = useAppSelector(selectUserState);
 
   const currentLocation = window.location.pathname;
+
+  const handleSearchProducts = useCallback(
+    async (e) => {
+      e.preventDefault();
+      dispatch(setSelectedCategoryToNull());
+      await dispatch(fetchProductsByProductName(searchProductInput));
+    },
+    [dispatch, searchProductInput]
+  );
 
   return (
     <header>
@@ -28,11 +42,18 @@ const Header = (props: Props) => {
         }
       >
         {currentLocation === "/shopping" ? (
-          <div id="search-products">
+          <form
+            id="search-products-form"
+            onSubmit={(e) => handleSearchProducts(e)}
+          >
             <label htmlFor="search-products">Search Products</label>
-            <input type="text" id="search-products" />
-            <button>Search</button>
-          </div>
+            <input
+              type="text"
+              id="search-products"
+              onChange={(e) => setSearchProductInput(e.target.value)}
+            />
+            <button type="submit">Search</button>
+          </form>
         ) : null}
 
         {currentLocation === "/home" ? (
