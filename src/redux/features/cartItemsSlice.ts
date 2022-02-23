@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import { CartItemModel } from "../../models/CartItem.model";
 import { RootState } from "../app/store";
@@ -14,6 +14,7 @@ export interface CartItemsState {
   status: "idle" | "loading" | "failed";
   statusCode: number;
   errorMessage: string;
+  totalPayment: number;
 }
 
 const initialState: CartItemsState = {
@@ -21,18 +22,19 @@ const initialState: CartItemsState = {
   status: "idle",
   statusCode: 200,
   errorMessage: "",
+  totalPayment: 0,
 };
 
 export const cartItemsSlice = createSlice({
   name: "cartItems",
   initialState,
   reducers: {
-    getCartItemsSync: (state, action: PayloadAction<CartItemModel[]>) => {
-      state.status = "idle";
-      state.statusCode = 200;
-      state.value = action.payload;
-      state.errorMessage = "";
-    },
+    // getCartItemsSync: (state, action: PayloadAction<CartItemModel[]>) => {
+    //   state.status = "idle";
+    //   state.statusCode = 200;
+    //   state.value = action.payload;
+    //   state.errorMessage = "";
+    // },
     // increment: (state) => {
     //   // Redux Toolkit allows us to write "mutating" logic in reducers. It
     //   // doesn't actually mutate the state because it uses the Immer library,
@@ -55,12 +57,16 @@ export const cartItemsSlice = createSlice({
         state.statusCode = 200;
         state.value = action.payload;
         state.errorMessage = "";
+        state.totalPayment = action.payload
+          .map((cartItem) => cartItem.quantity * cartItem.product.price)
+          .reduce((prev, current) => prev + current);
       })
       .addCase(fetchCartItems.rejected, (state, action) => {
         state.status = "failed";
         state.value = [];
         state.statusCode = action.payload!.status;
         state.errorMessage = action.payload!.data;
+        state.totalPayment = 0;
       })
       .addCase(addCartItem.pending, (state) => {
         state.status = "loading";
@@ -68,8 +74,10 @@ export const cartItemsSlice = createSlice({
       .addCase(addCartItem.fulfilled, (state, action) => {
         state.status = "idle";
         state.statusCode = 200;
-        state.value = action.payload;
+        state.value.push(action.payload);
         state.errorMessage = "";
+        state.totalPayment +=
+          action.payload.quantity * action.payload.product.price;
       })
       .addCase(addCartItem.rejected, (state, action) => {
         state.status = "failed";
@@ -81,9 +89,18 @@ export const cartItemsSlice = createSlice({
         state.status = "loading";
       })
       .addCase(deleteCartItem.fulfilled, (state, action) => {
+        const deletedCartItem = state.value.find(
+          (cartItem) => cartItem._id === action.payload
+        );
         state.status = "idle";
         state.statusCode = 200;
-        state.value = action.payload;
+        if (deletedCartItem) {
+          state.totalPayment -=
+            deletedCartItem.quantity * deletedCartItem.product.price;
+        }
+        state.value = state.value.filter(
+          (cartItem) => cartItem._id !== action.payload
+        );
         state.errorMessage = "";
       })
       .addCase(deleteCartItem.rejected, (state, action) => {
@@ -100,6 +117,7 @@ export const cartItemsSlice = createSlice({
         state.statusCode = 200;
         state.value = [];
         state.errorMessage = "";
+        state.totalPayment = 0;
       })
       .addCase(emptyCart.rejected, (state, action) => {
         state.status = "failed";
@@ -110,7 +128,7 @@ export const cartItemsSlice = createSlice({
   },
 });
 
-export const { getCartItemsSync } = cartItemsSlice.actions;
+// export const { getCartItemsSync } = cartItemsSlice.actions;
 
 export const selectCartItemsState = (state: RootState) => state.cartItems;
 

@@ -25,11 +25,15 @@ export const fetchCartItems = createAsyncThunk<
   }
 });
 
-export const addCartItem = createAsyncThunk(
+export const addCartItem = createAsyncThunk<
+  CartItemModel,
+  AddToCartBodyModel,
+  { rejectValue: AxiosResponse }
+>(
   "cartItems/addCartItem",
   async (addCartItemBody: AddToCartBodyModel, thunkApi) => {
     try {
-      const { data: cartItems } = await api.post(
+      const { data: newCartItem } = await api.post(
         `/add-cart-item`,
         addCartItemBody,
         {
@@ -37,7 +41,7 @@ export const addCartItem = createAsyncThunk(
         }
       );
 
-      return cartItems;
+      return newCartItem;
     } catch (error: any) {
       return thunkApi.rejectWithValue(error.response);
     }
@@ -45,20 +49,16 @@ export const addCartItem = createAsyncThunk(
 );
 
 export const deleteCartItem = createAsyncThunk<
-  CartItemModel[],
-  { cartId: string; cartItemId: string },
+  string,
+  string,
   { rejectValue: AxiosResponse }
->("cartItems/deleteCartItem", async (deleteCartItemParamsObj, thunkApi) => {
+>("cartItems/deleteCartItem", async (cartItemId, thunkApi) => {
   try {
-    const { cartId, cartItemId } = deleteCartItemParamsObj;
-    const { data: updatedCartItems } = await api.delete<CartItemModel[]>(
-      `/delete-cart-item/${cartId}/${cartItemId}`,
-      {
-        withCredentials: true,
-      }
-    );
+    await api.delete(`/delete-cart-item/${cartItemId}`, {
+      withCredentials: true,
+    });
 
-    return updatedCartItems;
+    return cartItemId;
   } catch (error: any) {
     return thunkApi.rejectWithValue(error.response);
   }

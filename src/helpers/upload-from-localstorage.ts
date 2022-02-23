@@ -1,7 +1,5 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { CartModel } from "../models/Cart.model";
 import { UserModel } from "../models/User.model";
-import { getCartSync } from "../redux/features/cartSlice";
 import { getUserState } from "../redux/features/userSlice";
 
 export function uploadFromLocalStorage(dispatch: Dispatch) {

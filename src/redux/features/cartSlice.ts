@@ -21,12 +21,12 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    getCartSync: (state, action: PayloadAction<CartModel | null>) => {
-      state.status = "idle";
-      state.statusCode = 200;
-      state.value = action.payload;
-      state.errorMessage = "";
-    },
+    // getCartSync: (state, action: PayloadAction<CartModel | null>) => {
+    //   state.status = "idle";
+    //   state.statusCode = 200;
+    //   state.value = action.payload;
+    //   state.errorMessage = "";
+    // },
     // increment: (state) => {
     //   // Redux Toolkit allows us to write "mutating" logic in reducers. It
     //   // doesn't actually mutate the state because it uses the Immer library,
@@ -74,7 +74,7 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { getCartSync } = cartSlice.actions;
+// export const { getCartSync } = cartSlice.actions;
 
 export const selectCartState = (state: RootState) => state.cart;
 

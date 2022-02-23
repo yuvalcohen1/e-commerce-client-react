@@ -15,14 +15,14 @@ interface Props {}
 
 const ShoppingCart: FC<Props> = () => {
   const dispatch = useAppDispatch();
-  const { value: cartItems } = useAppSelector(selectCartItemsState);
+  const { value: cartItems, totalPayment } =
+    useAppSelector(selectCartItemsState);
   const { value: cart } = useAppSelector(selectCartState);
 
   const handleDeleteCartItem = useCallback(
     async (cartItemId: string) => {
       if (cart) {
-        const deleteCartItemParamsObj = { cartId: cart._id, cartItemId };
-        await dispatch(deleteCartItem(deleteCartItemParamsObj));
+        await dispatch(deleteCartItem(cartItemId));
       }
     },
     [cart, dispatch]
@@ -63,10 +63,17 @@ const ShoppingCart: FC<Props> = () => {
           </div>
         ))}
       </div>
-      <button id="empty-cart-btn" onClick={() => onEmptyCart()}>
-        Empty Cart
+      {cartItems.length ? (
+        <button id="empty-cart-btn" onClick={() => onEmptyCart()}>
+          Empty Cart
+        </button>
+      ) : null}
+
+      <div id="total-price">Total: {totalPayment}</div>
+
+      <button id="checkout-btn" disabled={cartItems.length ? false : true}>
+        Checkout
       </button>
-      <button id="checkout-btn">Checkout</button>
     </div>
   );
 };
