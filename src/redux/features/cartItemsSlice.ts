@@ -59,7 +59,7 @@ export const cartItemsSlice = createSlice({
         state.errorMessage = "";
         state.totalPayment = action.payload
           .map((cartItem) => cartItem.quantity * cartItem.product.price)
-          .reduce((prev, current) => prev + current);
+          .reduce((prev, current) => prev + current, 0);
       })
       .addCase(fetchCartItems.rejected, (state, action) => {
         state.status = "failed";

@@ -4,6 +4,7 @@ import "./App.css";
 import { uploadFromLocalStorage } from "./helpers/upload-from-localstorage";
 import ErrorPage from "./pages/ErrorPage/ErrorPage";
 import HomePage from "./pages/HomePage/HomePage";
+import OrderPage from "./pages/OrderPage/OrderPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import ShoppingPage from "./pages/ShoppingPage/ShoppingPage";
 import { useAppDispatch, useAppSelector } from "./redux/app/hooks";
@@ -24,6 +25,7 @@ const App: FC = () => {
           <Route path="/home" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/shopping" element={<ShoppingPage />} />
+          <Route path="/order" element={<OrderPage />} />
           {userState.statusCode !== 200 ? (
             <Route path="/error" element={<ErrorPage />} />
           ) : null}

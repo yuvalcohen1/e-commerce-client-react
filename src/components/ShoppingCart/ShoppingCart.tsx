@@ -1,6 +1,7 @@
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { FC, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { ProductModel } from "../../models/Product.model";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
 import { selectCartItemsState } from "../../redux/features/cartItemsSlice";
@@ -19,6 +20,8 @@ const ShoppingCart: FC<Props> = () => {
     useAppSelector(selectCartItemsState);
   const { value: cart } = useAppSelector(selectCartState);
 
+  const navigate = useNavigate();
+
   const handleDeleteCartItem = useCallback(
     async (cartItemId: string) => {
       if (cart) {
@@ -33,6 +36,10 @@ const ShoppingCart: FC<Props> = () => {
       await dispatch(emptyCart(cart._id));
     }
   }, [cart, dispatch]);
+
+  const onCheckout = useCallback(() => {
+    navigate("/order");
+  }, [navigate]);
 
   return (
     <div id="shopping-cart">
@@ -71,7 +78,11 @@ const ShoppingCart: FC<Props> = () => {
 
       <div id="total-price">Total: {totalPayment}</div>
 
-      <button id="checkout-btn" disabled={cartItems.length ? false : true}>
+      <button
+        id="checkout-btn"
+        disabled={cartItems.length ? false : true}
+        onClick={onCheckout}
+      >
         Checkout
       </button>
     </div>
