@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/app/hooks";
+import { selectCartItemsState } from "../../redux/features/cartItemsSlice";
 import { selectCategoriesState } from "../../redux/features/categoriesSlice";
 import { selectProductsState } from "../../redux/features/productsSlice";
 import {
@@ -15,6 +16,7 @@ const Products: FC<Props> = (props) => {
   const dispatch = useAppDispatch();
   const { value: products } = useAppSelector(selectProductsState);
   const { selectedCategory } = useAppSelector(selectCategoriesState);
+  const { value: cartItems } = useAppSelector(selectCartItemsState);
 
   useEffect(() => {
     if (selectedCategory) {
@@ -37,7 +39,11 @@ const Products: FC<Props> = (props) => {
           </div>
           <div className="product-name">{product.productName}</div>
           <div className="product-price">{product.price}</div>
-          <AddToCartModal product={product} />
+          {cartItems.findIndex(
+            (cartItem) => cartItem.product._id === product._id
+          ) === -1 ? (
+            <AddToCartModal product={product} />
+          ) : null}
         </div>
       ))}
     </div>
