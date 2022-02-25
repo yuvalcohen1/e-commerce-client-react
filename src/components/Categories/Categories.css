@@ -2,11 +2,15 @@
   display: flex;
   background-color: rgb(0, 0, 0, 0.8);
   width: fit-content;
+  padding: 1rem;
+  margin: 1rem 0;
 }
 
 .category {
   cursor: pointer;
   color: #fff;
+  padding: 0 1rem;
+  font-size: 1.2rem;
 }
 
 #selected-category {

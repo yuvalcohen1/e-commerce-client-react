@@ -11,7 +11,7 @@ const HomePage: FC<Props> = () => {
   return (
     <div id="home-page">
       <Header />
-      <main>
+      <main id="home-page-main">
         <LoginBox />
         <AboutBox />
         <InfoBox />

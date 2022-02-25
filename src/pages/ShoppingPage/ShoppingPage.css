@@ -1,0 +1,9 @@
+#shopping-page-main {
+    display: flex;
+}
+
+#categories-and-products {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

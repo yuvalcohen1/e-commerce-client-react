@@ -5,7 +5,7 @@
   justify-content: space-between;
 }
 
-main {
+#home-page-main {
   display: flex;
   align-items: center;
 }

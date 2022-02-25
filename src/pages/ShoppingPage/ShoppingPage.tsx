@@ -30,9 +30,13 @@ const ShoppingPage: FC<Props> = (props) => {
   return (
     <div id="shopping-page">
       <Header />
-      <Categories />
-      <Products />
-      <ShoppingCart />
+      <main id="shopping-page-main">
+        <ShoppingCart />
+        <div id="categories-and-products">
+          <Categories />
+          <Products />
+        </div>
+      </main>
     </div>
   );
 };

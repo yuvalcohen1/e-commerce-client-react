@@ -43,6 +43,7 @@ const ShoppingCart: FC<Props> = () => {
 
   return (
     <div id="shopping-cart">
+      <h1>Shopping Cart</h1>
       <div id="cart-items">
         {cartItems.map((cartItem) => (
           <div key={cartItem._id} className="cart-item">

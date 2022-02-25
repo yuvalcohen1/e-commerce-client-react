@@ -30,15 +30,17 @@ const Products: FC<Props> = (props) => {
     <div id="products">
       {products?.map((product) => (
         <div key={product._id} className="product">
-          <div className="product-img-container">
-            <img
-              className="product-img"
-              src={product.imgUrl}
-              alt={product.productName}
-            />
+          <div id="product-main-content">
+            <div className="product-img-container">
+              <img
+                className="product-img"
+                src={product.imgUrl}
+                alt={product.productName}
+              />
+            </div>
+            <div className="product-name">{product.productName}</div>
+            <div className="product-price">{product.price}</div>
           </div>
-          <div className="product-name">{product.productName}</div>
-          <div className="product-price">{product.price}</div>
           {cartItems.findIndex(
             (cartItem) => cartItem.product._id === product._id
           ) === -1 ? (
