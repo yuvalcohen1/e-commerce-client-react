@@ -40,7 +40,8 @@ const InfoBox: FC<Props> = (props) => {
         available in our store
       </div>
       <div id="notification" className="info-part">
-        notifications
+        notifications: <br />
+        welcome!
       </div>
     </div>
   );

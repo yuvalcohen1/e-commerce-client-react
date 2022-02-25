@@ -1,3 +1,26 @@
 #login-error-message {
   color: red;
 }
+
+#login-form label {
+    display: block;
+}
+
+#login-form .form-group {
+  padding: 1rem;
+  font-size: 1.1rem;
+}
+
+#move-to-sign-up-btn {
+  color: orange;
+  margin-left: 0.5rem;
+}
+
+#login-btn {
+  background-color: lightseagreen;
+  margin-right: 0.5rem;
+}
+
+#login-btns {
+  text-align: center;
+}

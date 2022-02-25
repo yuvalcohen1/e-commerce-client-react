@@ -48,11 +48,11 @@ const LoginForm: FC<Props> = ({ loginErrorMessage }) => {
             required
           />
         </div>
-        <div className="btns">
-          <button type="submit" className="login-btn btn">
+        <div id="login-btns">
+          <button type="submit" id="login-btn">
             Login
           </button>
-          <Link to="/register" className="btn">
+          <Link to="/register" id="move-to-sign-up-btn">
             Sign Up
           </Link>
         </div>
