@@ -9,7 +9,9 @@ const RegisterPage: FC<Props> = (props) => {
   return (
     <div id="register-page">
       <Header />
-      <RegisterBox />
+      <main id="register-page-main">
+        <RegisterBox />
+      </main>
     </div>
   );
 };

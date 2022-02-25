@@ -2,3 +2,17 @@
 #register-error-message {
   color: red;
 }
+
+#register-box {
+  border: 1px solid black;
+  width: 25vw;
+  height: 65vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#register-box label {
+  display: block;
+}

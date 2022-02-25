@@ -22,7 +22,6 @@ const RegisterBox = (props: Props) => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
-  //   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const dispatch = useAppDispatch();
   const userState = useAppSelector(selectUserState);
@@ -103,7 +102,7 @@ const RegisterBox = (props: Props) => {
   );
 
   return (
-    <div>
+    <div id="register-box">
       <h1>Register</h1>
 
       <form onSubmit={handleSubmit}>
