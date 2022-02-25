@@ -3,19 +3,38 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 10%;
+  padding: 0 10%;
+  background-color: black;
+  color: white;
+  font-weight: bold;
 }
 
 #header-bottom {
   height: 7vh;
   display: flex;
+  align-items: center;
+  background-color: burlywood;
+  color: white;
 }
 
 #header-bottom.without-search {
   justify-content: end;
-  margin-right: 12%;
+  padding-right: 12%;
 }
 
 #header-bottom.with-search {
-  margin-left: 8%;
+  padding-left: 8%;
+}
+
+#search-products-btn {
+  background-color: cadetblue;
+  color: white;
+}
+
+#search-products-label {
+  padding-right: 0.5rem;
+}
+
+#logo {
+  font-size: 2rem;
 }

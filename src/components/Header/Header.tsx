@@ -46,13 +46,13 @@ const Header = (props: Props) => {
             id="search-products-form"
             onSubmit={(e) => handleSearchProducts(e)}
           >
-            <label htmlFor="search-products">Search Products</label>
+            <label id="search-products-label" htmlFor="search-products">Search Products</label>
             <input
               type="text"
               id="search-products"
               onChange={(e) => setSearchProductInput(e.target.value)}
             />
-            <button type="submit">Search</button>
+            <button id="search-products-btn" type="submit">Search</button>
           </form>
         ) : null}
 
