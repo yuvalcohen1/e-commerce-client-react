@@ -29,9 +29,7 @@ const App: FC = () => {
           <Route path="/home" element={<HomePage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/shopping" element={<ShoppingPage />} />
-          {userState.value && cart && cartItems ? (
-            <Route path="/order" element={<OrderPage />} />
-          ) : null}
+          <Route path="/order" element={<OrderPage />} />
 
           {userState.statusCode !== 200 ? (
             <Route path="/error" element={<ErrorPage />} />

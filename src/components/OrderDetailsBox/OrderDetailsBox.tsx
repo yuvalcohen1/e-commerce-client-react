@@ -18,24 +18,26 @@ const OrderDetailsBox: FC<Props> = (props) => {
           <Link to="/shopping">Back to shopping page</Link>
         </div>
 
-        {cartItems.map((cartItem) => (
-          <div key={cartItem._id} className="order-cart-item">
-            <div className="order-cart-item-img-container">
-              <img src={cartItem.product.imgUrl} alt="order-cart-item" />
-            </div>
-            <div className="order-main-details">
-              <div className="order-product-name">
-                {cartItem.product.productName}
+        <div id="order-cart-items">
+          {cartItems.map((cartItem) => (
+            <div key={cartItem._id} className="order-cart-item">
+              <div className="order-cart-item-img-container">
+                <img src={cartItem.product.imgUrl} alt="order-cart-item" />
               </div>
-              <span className="order-product-quantity">
-                Quantity: {cartItem.quantity} /
-              </span>
-              <span className="order-product-price">
-                price: {cartItem.product.price}
-              </span>
+              <div className="order-main-details">
+                <div className="order-product-name">
+                  {cartItem.product.productName}
+                </div>
+                <span className="order-product-quantity">
+                  Quantity: {cartItem.quantity} /
+                </span>
+                <span className="order-product-price">
+                  price: {cartItem.product.price}
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       <div id="order-total">Total: {totalPayment}</div>

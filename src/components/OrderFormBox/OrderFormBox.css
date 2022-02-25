@@ -4,10 +4,21 @@
   width: 35vw;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  padding: 3rem 0;
 }
 
-.form-group label {
+.order-form-group label {
   display: block;
+  font-size: 1.2rem;
+}
+
+.order-form-group input, .order-form-group select {
+  font-size: 1.2rem;
+  padding: 0.1rem;
+}
+
+.order-form-group {
+  padding: 0.5rem 0;
 }

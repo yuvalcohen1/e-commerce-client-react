@@ -117,9 +117,9 @@ const OrderFormBox: FC<Props> = ({ setOrderCompleted }) => {
 
   return (
     <div id="order-form-box">
-      <h1>Personal Details</h1>
+      <h1>Please fill the form to order:</h1>
       <form id="order-form" onSubmit={(e) => handleOrder(e)}>
-        <div className="form-group">
+        <div className="order-form-group">
           <label htmlFor="city">City:</label>
           <select
             name="city"
@@ -138,7 +138,7 @@ const OrderFormBox: FC<Props> = ({ setOrderCompleted }) => {
             ))}
           </select>
         </div>
-        <div className="form-group">
+        <div className="order-form-group">
           <label htmlFor="street">Street:</label>
           <input
             type="text"
@@ -147,7 +147,7 @@ const OrderFormBox: FC<Props> = ({ setOrderCompleted }) => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="order-form-group">
           <label htmlFor="shipping-date">Shipping Date:</label>
           <DatePicker
             selected={shippingDate}
@@ -157,7 +157,7 @@ const OrderFormBox: FC<Props> = ({ setOrderCompleted }) => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="order-form-group">
           <label htmlFor="credit-card">Credit Card Number:</label>
           <input
             type="number"

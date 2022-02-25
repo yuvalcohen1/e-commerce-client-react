@@ -14,11 +14,12 @@
 
 .order-cart-item {
   border: 1px solid black;
-  width: 70%;
-  height: 15%;
+  width: 100%;
+  height: 20%;
   display: flex;
   align-items: center;
   justify-content: space-around;
+  margin-bottom: 1rem;
 }
 
 .order-cart-item-img-container {
@@ -41,4 +42,14 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
+  padding: 1rem 0;
+}
+
+#order-cart-items {
+  width: 70%;
+  height: 80%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
