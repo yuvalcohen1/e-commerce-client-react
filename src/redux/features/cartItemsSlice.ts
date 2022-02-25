@@ -5,7 +5,7 @@ import { RootState } from "../app/store";
 import {
   addCartItem,
   deleteCartItem,
-  emptyCart,
+  emptyCartItems,
   fetchCartItems,
 } from "../thunks/cart-items-thunks";
 
@@ -29,6 +29,13 @@ export const cartItemsSlice = createSlice({
   name: "cartItems",
   initialState,
   reducers: {
+    emptyCartItemsSync: (state) => {
+      state.errorMessage = "";
+      state.status = "idle";
+      state.statusCode = 200;
+      state.totalPayment = 0;
+      state.value = [];
+    },
     // getCartItemsSync: (state, action: PayloadAction<CartItemModel[]>) => {
     //   state.status = "idle";
     //   state.statusCode = 200;
@@ -109,17 +116,17 @@ export const cartItemsSlice = createSlice({
         state.statusCode = action.payload!.status;
         state.errorMessage = action.payload!.data;
       })
-      .addCase(emptyCart.pending, (state) => {
+      .addCase(emptyCartItems.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(emptyCart.fulfilled, (state, action) => {
+      .addCase(emptyCartItems.fulfilled, (state, action) => {
         state.status = "idle";
         state.statusCode = 200;
         state.value = [];
         state.errorMessage = "";
         state.totalPayment = 0;
       })
-      .addCase(emptyCart.rejected, (state, action) => {
+      .addCase(emptyCartItems.rejected, (state, action) => {
         state.status = "failed";
         state.value = [];
         state.statusCode = action.payload!.status;
@@ -128,7 +135,7 @@ export const cartItemsSlice = createSlice({
   },
 });
 
-// export const { getCartItemsSync } = cartItemsSlice.actions;
+export const { emptyCartItemsSync } = cartItemsSlice.actions;
 
 export const selectCartItemsState = (state: RootState) => state.cartItems;
 

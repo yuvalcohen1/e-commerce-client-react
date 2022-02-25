@@ -1,0 +1,10 @@
+#order-page main {
+  display: flex;
+  justify-content: center;
+}
+
+#order-completed-title {
+  border: 1px solid black;
+  background-color: darksalmon;
+  font-size: 2rem;
+}

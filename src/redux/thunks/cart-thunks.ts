@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { CartModel } from "../../models/Cart.model";
 import axios, { AxiosResponse } from "axios";
+import { CartModel } from "../../models/Cart.model";
 
 const api = axios.create({
   baseURL: "http://localhost:4000/shopping-carts",
@@ -33,6 +33,20 @@ export const createCart = createAsyncThunk<
     );
 
     return newCart;
+  } catch (error: any) {
+    return thunkApi.rejectWithValue(error.response);
+  }
+});
+
+export const closeCart = createAsyncThunk<
+  undefined,
+  string,
+  { rejectValue: AxiosResponse }
+>("cart/closeCart", async (cartId: string, thunkApi) => {
+  try {
+    await api.put(`/close-cart/${cartId}`, {}, { withCredentials: true });
+
+    return;
   } catch (error: any) {
     return thunkApi.rejectWithValue(error.response);
   }

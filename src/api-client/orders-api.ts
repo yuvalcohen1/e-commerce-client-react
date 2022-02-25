@@ -10,3 +10,10 @@ export async function fetchNumAllOrders(): Promise<number> {
   } = await api.get("/num-of-all-orders");
   return numOfAllOrders;
 }
+
+export async function fetchDatesWithThreeOrders(): Promise<string[]> {
+  const { data: numOfAllOrders } = await api.get("/dates-with-three-orders", {
+    withCredentials: true,
+  });
+  return numOfAllOrders;
+}

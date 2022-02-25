@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CartModel } from "../../models/Cart.model";
 import { RootState } from "../app/store";
-import { createCart, fetchOpenCart } from "../thunks/cart-thunks";
+import { closeCart, createCart, fetchOpenCart } from "../thunks/cart-thunks";
 
 export interface CartState {
   value: CartModel | null;
@@ -70,6 +70,23 @@ export const cartSlice = createSlice({
         state.value = null;
         state.statusCode = action.payload.status;
         state.errorMessage = action.payload.data;
+      })
+      .addCase(closeCart.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(closeCart.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.statusCode = 200;
+        if (state.value) {
+          state.value.isOpen = 0;
+        }
+        state.errorMessage = "";
+      })
+      .addCase(closeCart.rejected, (state, action) => {
+        state.status = "failed";
+        state.value = null;
+        state.statusCode = action.payload!.status;
+        state.errorMessage = action.payload!.data;
       });
   },
 });

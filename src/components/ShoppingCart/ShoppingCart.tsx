@@ -8,7 +8,7 @@ import { selectCartItemsState } from "../../redux/features/cartItemsSlice";
 import { selectCartState } from "../../redux/features/cartSlice";
 import {
   deleteCartItem,
-  emptyCart,
+  emptyCartItems,
 } from "../../redux/thunks/cart-items-thunks";
 import "./ShoppingCart.css";
 
@@ -33,7 +33,7 @@ const ShoppingCart: FC<Props> = () => {
 
   const onEmptyCart = useCallback(async () => {
     if (cart) {
-      await dispatch(emptyCart(cart._id));
+      await dispatch(emptyCartItems(cart._id));
     }
   }, [cart, dispatch]);
 

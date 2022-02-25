@@ -1,0 +1,13 @@
+#order-form-box {
+  border: 1px solid black;
+  height: 70vh;
+  width: 35vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-group label {
+  display: block;
+}

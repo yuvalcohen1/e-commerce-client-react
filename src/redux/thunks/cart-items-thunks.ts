@@ -64,7 +64,7 @@ export const deleteCartItem = createAsyncThunk<
   }
 });
 
-export const emptyCart = createAsyncThunk<
+export const emptyCartItems = createAsyncThunk<
   undefined,
   string,
   { rejectValue: AxiosResponse }
