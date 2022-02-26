@@ -4,7 +4,9 @@
 
 #home-page-main {
   height: 83vh;
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(3, 30%);
+  gap: 1rem;
   justify-content: center;
+  align-items: center;
 }

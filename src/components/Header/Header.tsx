@@ -25,7 +25,7 @@ const Header = (props: Props) => {
   );
 
   return (
-    <header>
+    <header id="main-header">
       <div id="header-top">
         <div id="logo">SHOPO</div>
         <div id="contact">

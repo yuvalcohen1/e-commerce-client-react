@@ -1,8 +1,10 @@
 #products {
-  display: flex;
-  flex-direction: row-reverse;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   width: 72vw;
+  row-gap: 2rem;
+  direction: rtl;
+  padding-bottom: 1rem;
 }
 
 .product {
@@ -14,7 +16,6 @@
   padding: 1rem;
   width: 8vw;
   height: 28vh;
-  margin: 1rem;
 }
 
 .product .product-img-container {
